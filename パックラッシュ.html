@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pack Rush</title>
+
+<style>
+body{
+ margin:0;
+ font-family:-apple-system, BlinkMacSystemFont, sans-serif;
+ background:#000;
+ color:white;
+}
+
+h2{
+ text-align:center;
+ margin:40px 0 20px;
+}
+
+/* ===== HERO ===== */
+.hero{
+ height:100vh;
+ display:flex;
+ flex-direction:column;
+ justify-content:center;
+ align-items:center;
+ text-align:center;
+ position:relative;
+ overflow:hidden;
+}
+
+.hero::before{
+ content:"";
+ position:absolute;
+ width:200%;
+ height:200%;
+ background: radial-gradient(circle, rgba(255,215,0,0.15), transparent 70%);
+ animation: rotate 20s linear infinite;
+}
+
+@keyframes rotate{
+ from{transform:rotate(0deg);}
+ to{transform:rotate(360deg);}
+}
+
+.logo-img{
+ width:320px;
+ z-index:1;
+}
+
+.catch{
+ margin-top:20px;
+ font-size:18px;
+ opacity:0.8;
+ z-index:1;
+}
+
+.btn{
+ margin-top:30px;
+ padding:15px 50px;
+ background:linear-gradient(45deg,#FFD700,#ffcc00);
+ color:#000;
+ font-weight:bold;
+ border:none;
+ border-radius:50px;
+ cursor:pointer;
+ transition:0.3s;
+ z-index:1;
+}
+
+.btn:hover{
+ transform:scale(1.1);
+ box-shadow:0 0 25px rgba(255,215,0,1);
+}
+
+/* ===== PACK LIST ===== */
+.packs{
+ display:flex;
+ flex-wrap:wrap;
+ justify-content:center;
+ gap:20px;
+ padding:20px;
+}
+
+.pack{
+ background:#111;
+ border-radius:10px;
+ padding:20px;
+ width:260px;
+ text-align:center;
+ box-shadow:0 0 15px rgba(255,215,0,0.2);
+}
+
+.pack h3{
+ margin:10px 0;
+}
+
+.pack button{
+ margin-top:10px;
+ padding:10px 20px;
+ background:gold;
+ border:none;
+ border-radius:20px;
+ cursor:pointer;
+}
+
+/* ===== GACHA ===== */
+#gacha{
+ text-align:center;
+ margin:50px 0;
+}
+
+#result{
+ font-size:28px;
+ margin-top:20px;
+}
+
+/* ===== HISTORY ===== */
+.history{
+ max-width:600px;
+ margin:0 auto 50px;
+}
+
+.history-item{
+ background:#111;
+ padding:10px;
+ margin:5px 0;
+ border-radius:5px;
+ font-size:14px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- ===== HERO ===== -->
+<section class="hero">
+ <img src="logo.png" class="logo-img">
+ <div class="catch">引け、その一瞬で決まる。</div>
+ <button class="btn" onclick="scrollToPacks()">今すぐ引く</button>
+</section>
+
+<!-- ===== PACK LIST ===== -->
+<h2>オリパ一覧</h2>
+<div class="packs">
+
+ <div class="pack">
+  <h3>1000円オリパ</h3>
+  <p>残り：87口</p>
+  <p>還元率：80%</p>
+  <button onclick="draw()">引く</button>
+ </div>
+
+ <div class="pack">
+  <h3>5000円オリパ</h3>
+  <p>残り：42口</p>
+  <p>還元率：85%</p>
+  <button onclick="draw()">引く</button>
+ </div>
+
+</div>
+
+<!-- ===== GACHA ===== -->
+<div id="gacha">
+ <h2>開封結果</h2>
+ <div id="result">---</div>
+</div>
+
+<!-- ===== HISTORY ===== -->
+<h2>当選履歴</h2>
+<div class="history" id="history"></div>
+
+<script>
+
+// スクロール
+function scrollToPacks(){
+ document.querySelector('.packs').scrollIntoView({behavior:'smooth'});
+}
+
+// ガチャ処理
+function draw(){
+
+ const rand = Math.random();
+ let result = "";
+ let color = "";
+
+ if(rand < 0.01){
+  result = "SSR（大当たり）";
+  color = "gold";
+  effect("SSR");
+ }else if(rand < 0.06){
+  result = "SR";
+  color = "deepskyblue";
+  effect("SR");
+ }else if(rand < 0.25){
+  result = "R";
+  color = "lime";
+ }else{
+  result = "N";
+  color = "gray";
+ }
+
+ const resultEl = document.getElementById("result");
+ resultEl.innerHTML = "開封中...";
+ resultEl.style.color = "white";
+
+ setTimeout(()=>{
+  resultEl.innerHTML = result;
+  resultEl.style.color = color;
+
+  addHistory(result);
+
+ },800);
+}
+
+// 演出
+function effect(rank){
+ if(rank==="SSR"){
+  document.body.style.background="radial-gradient(circle, gold, black)";
+  setTimeout(()=>document.body.style.background="#000",500);
+ }
+ if(rank==="SR"){
+  document.body.style.background="radial-gradient(circle, deepskyblue, black)";
+  setTimeout(()=>document.body.style.background="#000",500);
+ }
+}
+
+// 履歴追加
+function addHistory(result){
+ const history = document.getElementById("history");
+ const item = document.createElement("div");
+
+ const time = new Date().toLocaleTimeString();
+
+ item.className = "history-item";
+ item.innerText = `ユーザーが ${result} を獲得 (${time})`;
+
+ history.prepend(item);
+}
+
+</script>
+
+</body>
+</html> setTimeout(()=>document.body.style.background="#000",500);
+  }
+}
+</script>
